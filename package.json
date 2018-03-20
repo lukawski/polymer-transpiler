@@ -4,7 +4,7 @@
   "version": "1.0.0-alpha",
   "main": "index.js",
   "bin": {
-    "poly-transpiler": "./index.js"
+    "polymer-transpiler": "./index.js"
   },
   "repository": {
     "type": "git",

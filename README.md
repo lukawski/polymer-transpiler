@@ -5,6 +5,8 @@
 `npm i -g polymer-transpiler`
 
 ## Usage
+`polymer-transpiler [options]`
+
 ###CLI options
 `-p, --path` - specifies path in wich transpiler will search for components, defaults to `./`
 
