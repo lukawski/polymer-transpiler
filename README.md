@@ -7,7 +7,7 @@
 ## Usage
 `polymer-transpiler [options]`
 
-###CLI options
+### CLI options
 `-p, --path` - specifies path in wich transpiler will search for components, defaults to `./`
 
 `-e, --extends` - specifies base class to extend, defaults to `Polymer.Element`
