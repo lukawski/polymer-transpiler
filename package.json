@@ -1,0 +1,15 @@
+{
+  "name": "polymer-transpiler",
+  "version": "1.0.0-alpha",
+  "main": "index.js",
+  "bin": {
+    "poly-transpiler": "./index.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^2.15.1",
+    "jsdom": "^11.6.2",
+    "prettier": "^1.11.1",
+    "pretty": "^2.0.0"
+  }
+}
