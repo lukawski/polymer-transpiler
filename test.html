@@ -1,61 +1,75 @@
-<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../iron-icon/iron-icon.html">
 
+<link rel="import" href="../../src/common/hub-cms-element.html">
 <dom-module id="icon-toggle">
 
 
-  <template>
 
-    <style>
-      :host {
-        display: inline-block;
-      }
-
-      iron-icon {
-        fill: var(--icon-toggle-color, rgba(0, 0, 0, 0));
-        stroke: var(--icon-toggle-outline-color, currentcolor);
-      }
-
-      :host([pressed]) iron-icon {
-        fill: var(--icon-toggle-pressed-color, currentcolor);
-      }
-    </style>
-
-    <!-- local DOM goes here -->
-    <iron-icon icon="[[toggleIcon]]">
-    </iron-icon>
-
-  </template>
 
   <script>
-    Polymer({
-      /* sss*/
-      is: 'icon-toggle',
-      behaviors: ['Siema', 'Elo'],
-      properties: {
-        pressed: {
-          type: Boolean,
-          notify: true,
-          reflectToAttribute: true,
-          value: false
-        },
-        toggleIcon: {
-          type: String
-        },
-      },
-      listeners: {
-        "tap": "toggle",
-      },
-      ready: function () {
+    class IconToggle extends Polymer.mixinBehaviors(
+      ['Siema', 'Elo'],
+      Polymer.Element
+    ) {
+      static get is() {
+        return 'icon-toggle';
+      }
+
+      static get properties() {
+        return {
+          pressed: {
+            type: Boolean,
+            notify: true,
+            reflectToAttribute: true,
+            value: false
+          },
+          toggleIcon: {
+            type: String
+          }
+        };
+      }
+
+      static get template() {
+        return Polymer.html `
+<style>
+  :host {
+    display: inline-block;
+  }
+
+  iron-icon {
+    fill: var(--icon-toggle-color, rgba(0, 0, 0, 0));
+    stroke: var(--icon-toggle-outline-color, currentcolor);
+  }
+
+  :host([pressed]) iron-icon {
+    fill: var(--icon-toggle-pressed-color, currentcolor);
+  }
+</style>
+
+<!-- local DOM goes here -->
+<iron-icon icon="[[toggleIcon]]">
+</iron-icon> `;
+      }
+
+      ready() {
+        super.ready();
+        this.addEventListener('tap', this.toggle);
+
         console.log('!');
-      },
-      created: function () {
+      }
+
+      constructor() {
+        super();
         var s = 32;
-      },
-      toggle: function () {
+      }
+
+      toggle() {
         this.pressed = !this.pressed;
-      },
-    });
+      }
+    }
+
+    customElements.define(IconToggle.is, IconToggle);
   </script>
 
 </dom-module>

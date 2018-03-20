@@ -13,7 +13,7 @@ program
   .parse(process.argv);
 
 
-const ignored = ['/demo', '/test', 'index', 'all-imports', 'behavior'];
+const ignored = ['/demo', /*test',*/, 'node_modules', 'index', 'all-imports', 'behavior'];
 
 const travel = (dir) => {
   fs.readdir(dir, (err, list) => {
@@ -31,14 +31,14 @@ const travel = (dir) => {
           travel(filePath);
         } else {
           const isIgnored = Boolean(ignored.filter(ignore => filePath.indexOf(ignore) !== -1).length);
-          console.log(isIgnored);
+          // console.log(isIgnored);
           if (path.extname(filePath) !== '.html' || isIgnored) return;
           fs.readFile(filePath, 'utf8', (err, data) => {
             // console.log(data);
             console.log(filePath);
             const transpiled = transpile(data, program.extends);
-            console.log(transpiled);
-            // fs.writeFile(filePath, transpiled, 'utf8', (err) => console.log(`${filePath} was transpiled and saved.`));
+            console.log('transpiled:', transpiled);
+            fs.writeFile(filePath, transpiled, (err) => console.log(`${filePath} was transpiled and saved.`));
           });
         }
       });
