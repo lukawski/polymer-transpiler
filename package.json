@@ -1,10 +1,22 @@
 {
   "name": "polymer-transpiler",
+  "description": "Polymer 1 to Polymer 2 transpiler.",
   "version": "1.0.0-alpha",
   "main": "index.js",
   "bin": {
     "poly-transpiler": "./index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lukawski/polymer-transpiler.git"
+  },
+  "author": {
+    "name": "Kacper Łukawski"
+  },
+  "bugs": {
+    "url": "https://github.com/lukawski/polymer-transpiler/issues"
+  },
+  "homepage": "https://github.com/lukawski/polymer-transpiler",
   "license": "MIT",
   "dependencies": {
     "commander": "^2.15.1",
