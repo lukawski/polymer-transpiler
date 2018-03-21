@@ -3,9 +3,7 @@ const prettier = require('prettier');
 const pretty = require('pretty');
 const Polymer = require('./polymer-mock');
 const createClass = require('./create-class');
-const window = {
-  matchMedia: () => ({ matches: null })
-};
+const window = {};
 
 const staticPropsCollection = ['is', 'template', 'observers', 'properties', 'template'];
 const lifecycleMethodsCollection = {
@@ -139,19 +137,21 @@ const transpile = (code, elToExtend = 'Polymer.Element') => {
   const dom = new JSDOM(code);
   const script = dom.window.document.querySelector('script');
   if (!script || script.textContent.indexOf('class') !== -1 || !script.textContent.length) return '';
+  const [polymerCode] = script.textContent.match(/Polymer\({\s?[^]+}\)/);
+
   const template = dom.window.document.querySelector('template');
-  const behaviors = extractBehaviors(script.textContent);
-  const polymerConfig = eval(script.textContent.replace(/behaviors:\s?\[([^]+?)\],?/, ''));
+  const behaviors = extractBehaviors(polymerCode);
+  const polymerConfig = eval(polymerCode.replace(/behaviors:\s?\[([^]+?)\],?/, ''));
   const prettyTempl = template ? pretty(template.innerHTML) : template;
   const newTemplate = createClass(createConfig(polymerConfig, prettyTempl, behaviors, elToExtend));
   if (template) dom.window.document.querySelector('dom-module').removeChild(template);
   changePolymerImport(dom.window.document.head, dom);
-
-  script.textContent = prettier.format(newTemplate, {
+  const prettierTemplate = prettier.format(newTemplate, {
     useTabs: true,
     tabWidth: 4,
     singleQuote: true,
   });
+  script.textContent = script.textContent.replace(/Polymer\({\s?[^]+}\);?/, prettierTemplate);
   const possibleTypes = ['Boolean', 'Date', 'Number', 'String', 'Array', 'Object']
   for (let i = 0; i < possibleTypes.length; i++) {
     const regex = new RegExp(`'${possibleTypes[i]}'`, 'g');
