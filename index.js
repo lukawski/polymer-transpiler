@@ -13,7 +13,7 @@ program
   .parse(process.argv);
 
 
-const ignored = ['/demo', /*test',*/, 'node_modules', 'index', 'all-imports', 'behavior'];
+const ignored = ['/demo', 'test', 'node_modules', 'bower_components', 'index', 'all-imports', 'behavior'];
 
 const travel = (dir) => {
   fs.readdir(dir, (err, list) => {
@@ -23,7 +23,6 @@ const travel = (dir) => {
 
     for (let i = 0, listLen = list.length; i < listLen; i++) {
       const filePath = path.resolve(dir, list[i]);
-      // console.log(filePath)
       fs.stat(filePath, (err, stat) => {
         if (err) throw err;
 
@@ -31,14 +30,14 @@ const travel = (dir) => {
           travel(filePath);
         } else {
           const isIgnored = Boolean(ignored.filter(ignore => filePath.indexOf(ignore) !== -1).length);
-          // console.log(isIgnored);
           if (path.extname(filePath) !== '.html' || isIgnored) return;
           fs.readFile(filePath, 'utf8', (err, data) => {
-            // console.log(data);
-            console.log(filePath);
             const transpiled = transpile(data, program.extends);
-            console.log('transpiled:', transpiled);
-            fs.writeFile(filePath, transpiled, (err) => console.log(`${filePath} was transpiled and saved.`));
+            if (!transpiled) {
+              console.log(`${filePath} is already a class`);
+              return;
+            }
+            fs.writeFile(filePath, transpiled, 'utf-8', (err) => console.log(`${filePath} was transpiled and saved.`));
           });
         }
       });
