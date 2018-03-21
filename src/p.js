@@ -3,6 +3,9 @@ const prettier = require('prettier');
 const pretty = require('pretty');
 const Polymer = require('./polymer-mock');
 const createClass = require('./create-class');
+const window = {
+  matchMedia: () => ({ matches: null })
+};
 
 const staticPropsCollection = ['is', 'template', 'observers', 'properties', 'template'];
 const lifecycleMethodsCollection = {
@@ -129,7 +132,7 @@ const changePolymerImport = (head, dom) => {
 	const newImport = dom.window.document.createElement('link');
 	newImport.rel = 'import';
 	newImport.href = '../../src/common/hub-cms-element.html'
-	head.appendChild(newImport);
+	head.prepend(newImport);
 }
 
 const transpile = (code, elToExtend = 'Polymer.Element') => {
@@ -138,7 +141,7 @@ const transpile = (code, elToExtend = 'Polymer.Element') => {
   if (!script || script.textContent.indexOf('class') !== -1 || !script.textContent.length) return '';
   const template = dom.window.document.querySelector('template');
   const behaviors = extractBehaviors(script.textContent);
-  const polymerConfig = eval(script.textContent.replace(/behaviors:\s?\[([^]+?)\],/, ''));
+  const polymerConfig = eval(script.textContent.replace(/behaviors:\s?\[([^]+?)\],?/, ''));
   const prettyTempl = template ? pretty(template.innerHTML) : template;
   const newTemplate = createClass(createConfig(polymerConfig, prettyTempl, behaviors, elToExtend));
   if (template) dom.window.document.querySelector('dom-module').removeChild(template);
