@@ -1,8 +1,12 @@
 # Polymer 1 to Polymer 2 transpiler.
 
+[![npm version](https://badge.fury.io/js/polymer-transpiler.svg)](https://badge.fury.io/js/polymer-transpiler)
+
 ## Installation
 
 `npm i -g polymer-transpiler`
+
+`yarn global add polymer-transpiler`
 
 ## Usage
 `polymer-transpiler [options]`
