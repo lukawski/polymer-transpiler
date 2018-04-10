@@ -18,7 +18,6 @@ const ignored = ['/demo', 'test', 'node_modules', 'bower_components', 'index', '
 const travel = (dir) => {
   fs.readdir(dir, (err, list) => {
     if (err) throw err;
-
     if (!list.length) return console.warn('Empty directory');
 
     for (let i = 0, listLen = list.length; i < listLen; i++) {
