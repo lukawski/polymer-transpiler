@@ -110,6 +110,10 @@ const createConfig = (classProps, template, behaviors, elToExtend) => {
 	};
 }
 
+const extract = (code, pattern) => {
+	[match] = code.match(pattern);
+	return match ? match.split(':').slice(1).join('') : '';
+}
 
 const extractBehaviors = (code) => {
 	return code.match(/behaviors:\s?\[([^]+?)\]/) ? code.match(/behaviors:\s?\[([^]+?)\]/)[0]
@@ -135,12 +139,12 @@ const changePolymerImport = (head, dom) => {
 
 const transpile = (code, elToExtend = 'Polymer.Element') => {
   const dom = new JSDOM(code);
-  const script = dom.window.document.querySelector('script');
-  if (!script || script.textContent.indexOf('class') !== -1 || !script.textContent.length) return '';
+	const script = dom.window.document.querySelector('script');
+  if (!script || script.textContent.indexOf('Polymer({') === -1 || !script.textContent.length) return '';
   const [polymerCode] = script.textContent.match(/Polymer\({\s?[^]+}\)/);
 
   const template = dom.window.document.querySelector('template');
-  const behaviors = extractBehaviors(polymerCode);
+	const behaviors = extractBehaviors(polymerCode);
   const polymerConfig = eval(polymerCode.replace(/behaviors:\s?\[([^]+?)\],?/, ''));
   const prettyTempl = template ? pretty(template.innerHTML) : template;
   const newTemplate = createClass(createConfig(polymerConfig, prettyTempl, behaviors, elToExtend));
