@@ -163,7 +163,7 @@ const transpile = (code, elToExtend = 'Polymer.Element') => {
   }
   return pretty(dom.window.document.head.innerHTML + dom.window.document.body.innerHTML, {
     ocd: true
-  });
+  }).replace('Polymer.html `', 'Polymer.html`');
 }
 
 module.exports = transpile;
