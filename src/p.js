@@ -161,9 +161,9 @@ const transpile = (code, elToExtend = 'Polymer.Element') => {
     const regex = new RegExp(`'${possibleTypes[i]}'`, 'g');
     script.textContent = script.textContent.replace(regex, possibleTypes[i]);
   }
-  const newContent = pretty(dom.window.document.head.innerHTML + dom.window.document.body.innerHTML);
-
-  return newContent;
+  return pretty(dom.window.document.head.innerHTML + dom.window.document.body.innerHTML, {
+    ocd: true
+  });
 }
 
 module.exports = transpile;
